@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncUp: A New Vision for Music Streaming - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The SPA is structured as a narrative-driven, single-page dashboard to guide a UI/UX designer through the product vision. It starts with the high-level market context, drills down into specific problems, presents our solution's features, outlines the technical foundation, and finally introduces the user personas. This top-down, non-linear structure with a sticky nav allows the designer to freely explore sections based on their needs, making it more effective than a static document. The goal is to provide context (the 'why') before presenting the solution (the 'what'), enabling a more informed design process. -->
+    <!-- Visualization & Content Choices: 
+    - Market Share: Report Info -> Streaming service subscriber numbers. Goal -> Compare market leaders. Viz -> Doughnut Chart. Interaction -> Dropdown to switch data view (Subscribers vs. Revenue). Justification -> Best for showing parts-of-a-whole composition. Library -> Chart.js.
+    - Artist Payouts: Report Info -> Average payout per stream. Goal -> Highlight industry disparity. Viz -> Horizontal Bar Chart. Interaction -> Toggle between per-stream and per-$1000 views. Justification -> Direct, impactful comparison of values. Library -> Chart.js.
+    - User Pain Points: Report Info -> Common complaints about existing platforms. Goal -> Organize qualitative data. Viz -> Interactive Cards. Interaction -> Click to expand/reveal details. Justification -> Keeps the UI clean while allowing deep dives into specific issues. Method -> HTML/CSS/JS.
+    - Architecture Diagram: Report Info -> Proposed tech stack. Goal -> Inform technical constraints. Viz -> Diagram made with HTML/CSS. Interaction -> Hover tooltips. Justification -> Visualizes system structure without using forbidden SVG/Mermaid. Method -> Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D3D3D;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0C7A7E;
+            border-bottom-color: #0C7A7E;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="sticky top-0 z-50 bg-[#F8F7F4]/80 backdrop-blur-md shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold text-[#0C7A7E]">SyncUp PRD</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#vision" class="nav-link text-gray-700 font-medium pb-1">Vision</a>
+                    <a href="#problems" class="nav-link text-gray-700 font-medium pb-1">Problems</a>
+                    <a href="#solution" class="nav-link text-gray-700 font-medium pb-1">Solution</a>
+                    <a href="#tech" class="nav-link text-gray-700 font-medium pb-1">Tech Stack</a>
+                    <a href="#personas" class="nav-link text-gray-700 font-medium pb-1">Personas</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-gray-700 focus:outline-none" aria-label="Open navigation menu">
+                        <span class="sr-only">Open navigation menu</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="#vision" class="block nav-link text-gray-700">Vision</a>
+                <a href="#problems" class="block nav-link text-gray-700">Problems</a>
+                <a href="#solution" class="block nav-link text-gray-700">Solution</a>
+                <a href="#tech" class="block nav-link text-gray-700">Tech Stack</a>
+                <a href="#personas" class="block nav-link text-gray-700">Personas</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="vision" class="min-h-screen flex items-center">
+            <div class="w-full text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#0C7A7E] to-[#63B4B8]">A New Vision for Music</h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    The current music streaming landscape is broken. It prioritizes passive consumption and opaque systems over genuine connection and artist prosperity. This document outlines SyncUp, a platform designed to fix this by fostering a transparent, interactive, and artist-first ecosystem.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="glass-card p-6 rounded-xl shadow-md">
+                        <h3 class="text-4xl font-bold text-[#0C7A7E]">450M+</h3>
+                        <p class="text-gray-600">Paid Subscribers Globally</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl shadow-md">
+                        <h3 class="text-4xl font-bold text-[#0C7A7E]">$0.003</h3>
+                        <p class="text-gray-600">Avg. Payout Per Stream</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl shadow-md">
+                        <h3 class="text-4xl font-bold text-[#0C7A7E]">78%</h3>
+                        <p class="text-gray-600">Users feel trapped in algorithmic bubbles</p>
+                    </div>
+                </div>
+                 <div class="mt-12 text-center">
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">This document provides the context and requirements for the UI/UX designer to craft an experience that is intuitive, transparent, and empowers both artists and fans. Let's explore the core problems we aim to solve.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="problems" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-4">The Broken System</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Before designing a solution, we must understand the fundamental flaws in the current streaming model. The following interactive exhibits highlight the key pain points for artists and listeners alike, providing the 'why' behind SyncUp's features.
+            </p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl mb-4 text-center">Global Subscriber Market Share</h3>
+                    <div class="chart-container">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4 text-center">A handful of major players dominate the market, creating a monoculture that dictates how music is consumed and how artists are compensated.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-xl mb-2 text-center">The Reality of Artist Payouts</h3>
+                     <div class="flex justify-center mb-4">
+                        <button id="payout-toggle-btn" class="bg-[#0C7A7E] text-white px-4 py-2 rounded-full text-sm font-medium">Switch to 'Streams for $100'</button>
+                    </div>
+                    <div class="chart-container h-96">
+                        <canvas id="artistPayoutChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4 text-center">The vast difference in payout rates is a critical problem. Our platform must provide a clear and fair compensation model.</p>
+                </div>
+            </div>
+
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold text-center mb-8">Key User & Artist Pain Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-card p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2"> opaque Royalties</h4>
+                        <p class="text-sm text-gray-700">Artists have little to no insight into how their earnings are calculated, leading to mistrust and financial instability.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">Algorithmic Bubbles</h4>
+                        <p class="text-sm text-gray-700">Listeners are fed a repetitive diet of similar-sounding music, stifling genuine discovery of new and diverse artists.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">Passive Listening</h4>
+                        <p class="text-sm text-gray-700">The experience is transactional. The art, liner notes, and context behind the music are lost in an endless stream of tracks.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">Broken Social Features</h4>
+                        <p class="text-sm text-gray-700">"Social" is limited to sharing a link. There's no space for shared experiences, collaborative discovery, or real artist-fan connection.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-20 bg-white rounded-2xl">
+             <h2 class="text-4xl font-bold text-center mb-4">The SyncUp Solution: Core Features</h2>
+             <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                 SyncUp is built on four pillars designed to directly address the problems we've identified. For the designer: each feature should be approached with the goal of maximizing clarity, trust, and engagement. The user interface must reflect our commitment to transparency and community.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="border border-gray-200 p-6 rounded-xl text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="text-4xl mb-4 text-[#0C7A7E]">📊</div>
+                    <h3 class="font-bold text-xl mb-2">Transparent Analytics</h3>
+                    <p class="text-gray-600 text-sm mb-4">A real-time dashboard for artists showing streams, revenue, and listener demographics with unprecedented clarity.</p>
+                    <button class="solution-btn text-sm text-[#0C7A7E] font-semibold" data-title="Transparent Analytics" data-content="<p><strong>User Story:</strong> As an independent artist, I want to see exactly how much I earn per stream, where my listeners are, and which playlists are driving traffic, so I can make informed decisions about my career.</p><p><strong>Design Mandate:</strong> Design a dashboard that is visually engaging, easy to understand at a glance, and allows for deep dives into data without overwhelming the user. Prioritize clarity and data visualization over raw numbers.</p>">View Details</button>
+                </div>
+                <div class="border border-gray-200 p-6 rounded-xl text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="text-4xl mb-4 text-[#0C7A7E]">🎧</div>
+                    <h3 class="font-bold text-xl mb-2">Immersive Album Experience</h3>
+                    <p class="text-gray-600 text-sm mb-4">Bring back the art of the album with digital liner notes, high-resolution artwork, credits, and artist commentary.</p>
+                    <button class="solution-btn text-sm text-[#0C7A7E] font-semibold" data-title="Immersive Album Experience" data-content="<p><strong>User Story:</strong> As a music fan, I want to dive deeper into my favorite albums, read the lyrics, see the artwork, and learn about who played on each track, so I can connect more deeply with the music.</p><p><strong>Design Mandate:</strong> Create a 'Now Playing' view for albums that feels like a modern, interactive version of a vinyl record sleeve. The experience should be rich and layered, encouraging exploration beyond just hitting 'play'.</p>">View Details</button>
+                </div>
+                <div class="border border-gray-200 p-6 rounded-xl text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="text-4xl mb-4 text-[#0C7A7E]">💬</div>
+                    <h3 class="font-bold text-xl mb-2">Community Listening Rooms</h3>
+                    <p class="text-gray-600 text-sm mb-4">Public and private spaces where users can listen to music together in real-time, chat, and build collaborative queues.</p>
+                    <button class="solution-btn text-sm text-[#0C7A7E] font-semibold" data-title="Community Listening Rooms" data-content="<p><strong>User Story:</strong> As a fan, I want to host a listening party for my favorite artist's new album with my friends online, so we can experience it together and discuss it in real-time.</p><p><strong>Design Mandate:</strong> Design an interface for listening rooms that balances music playback controls, a live chat, and a collaborative queue system. It should feel social and intuitive, encouraging interaction without distracting from the music.</p>">View Details</button>
+                </div>
+                 <div class="border border-gray-200 p-6 rounded-xl text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="text-4xl mb-4 text-[#0C7A7E]">💰</div>
+                    <h3 class="font-bold text-xl mb-2">Direct Artist Support</h3>
+                    <p class="text-gray-600 text-sm mb-4">Seamlessly integrated tools for fans to support artists directly through tips, exclusive content, and merchandise.</p>
+                    <button class="solution-btn text-sm text-[#0C7A7E] font-semibold" data-title="Direct Artist Support" data-content="<p><strong>User Story:</strong> As a listener who just discovered a new band, I want an easy way to show my appreciation and support them financially, so they can continue making music.</p><p><strong>Design Mandate:</strong> Integrate support options (like a 'tip' button) naturally within the artist and track views. The process should be frictionless and feel like a genuine act of appreciation, not a forced transaction.</p>">View Details</button>
+                </div>
+            </div>
+        </section>
+        
+        <div id="solution-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full m-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                    <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div id="modal-content" class="text-gray-700 space-y-4"></div>
+            </div>
+        </div>
+
+        <section id="tech" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-4">Proposed Technology Stack</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                To the designer: a stable, scalable, and modern tech stack will power the experience you create. Our choice of Java for the backend ensures robustness and performance, capable of handling real-time data for analytics and listening rooms. This technical foundation allows for a rich, responsive, and reliable user interface.
+            </p>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg">Frontend</h4>
+                        <div class="mt-4 p-4 border-2 border-dashed border-[#63B4B8] rounded-lg">
+                            <p class="font-medium">React / Vue.js</p>
+                            <p class="text-sm text-gray-500">For a dynamic & responsive user experience.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center text-gray-400 font-bold text-2xl">→</div>
+                     <div class="p-4">
+                        <h4 class="font-semibold text-lg">Backend</h4>
+                        <div class="mt-4 p-4 border-2 border-solid border-[#0C7A7E] rounded-lg relative">
+                            <span class="absolute -top-3 bg-white px-2 text-sm font-semibold text-[#0C7A7E]">CORE</span>
+                            <p class="font-medium">Java (Spring Boot)</p>
+                             <p class="text-sm text-gray-500">For robust APIs, real-time data processing, and security.</p>
+                        </div>
+                    </div>
+                     <div class="flex items-center justify-center text-gray-400 font-bold text-2xl">→</div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg">Database</h4>
+                        <div class="mt-4 p-4 border-2 border-dashed border-[#63B4B8] rounded-lg">
+                             <p class="font-medium">PostgreSQL & Redis</p>
+                             <p class="text-sm text-gray-500">For relational data and fast caching.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="personas" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-4">Target Personas</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Design for them. These personas represent our core audience. Every design decision should be weighed against their goals, needs, and frustrations. Understanding them is key to building a product they will love and advocate for.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="font-bold text-xl text-[#0C7A7E] mb-2">Chloe, The Emerging Artist</h3>
+                    <p class="font-medium mb-4">"I pour my soul into my music, but I feel like I'm shouting into a void. I don't know who's listening or if I'll ever make a living from it."</p>
+                    <div class="text-sm space-y-2">
+                        <p><strong>Goals:</strong> Build a fanbase, understand her audience, achieve financial stability from her art.</p>
+                        <p><strong>Frustrations:</strong> Opaque payment systems, lack of data, difficulty connecting with listeners directly.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="font-bold text-xl text-[#0C7A7E] mb-2">Alex, The Super Fan</h3>
+                    <p class="font-medium mb-4">"I love discovering new artists and supporting them from the start. I want to feel like I'm part of their journey, not just a number on a stat sheet."</p>
+                     <div class="text-sm space-y-2">
+                        <p><strong>Goals:</strong> Support artists directly, connect with artists and other fans, discover unique music outside the mainstream.</p>
+                        <p><strong>Frustrations:</strong> No way to give money directly to artists, shallow social features, repetitive recommendations.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="font-bold text-xl text-[#0C7A7E] mb-2">Sam, The Casual Listener</h3>
+                    <p class="font-medium mb-4">"Music is the soundtrack to my life, but I'm tired of hearing the same 20 songs on every playlist. I wish discovery felt more authentic and less... automated."</p>
+                     <div class="text-sm space-y-2">
+                        <p><strong>Goals:</strong> Find new music easily, have a seamless listening experience, discover music through friends and trusted curators.</p>
+                        <p><strong>Frustrations:</strong> Algorithmic bubbles, generic playlists, lack of human curation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const marketShareChartCtx = document.getElementById('marketShareChart').getContext('2d');
+            const artistPayoutChartCtx = document.getElementById('artistPayoutChart').getContext('2d');
+            
+            let marketShareChart;
+            let artistPayoutChart;
+
+            const marketData = {
+                labels: ['Spotify', 'Apple Music', 'Tencent Music', 'Amazon Music', 'YouTube Music', 'Others'],
+                datasets: [{
+                    label: 'Market Share by Subscribers',
+                    data: [31, 15, 13, 13, 8, 20],
+                    backgroundColor: ['#1DB954', '#B3B3B3', '#FFC700', '#00A8E1', '#FF0000', '#63B4B8'],
+                }]
+            };
+            
+            const payoutData = {
+                perStream: {
+                    labels: ['Tidal', 'Apple Music', 'Amazon Music', 'Spotify', 'YouTube Music'],
+                    datasets: [{
+                        label: 'Avg. Payout per Stream (USD)',
+                        data: [0.0128, 0.0080, 0.0040, 0.0033, 0.0020],
+                        backgroundColor: '#0C7A7E',
+                        borderColor: '#0A6063',
+                        borderWidth: 1
+                    }]
+                },
+                per100: {
+                    labels: ['Tidal', 'Apple Music', 'Amazon Music', 'Spotify', 'YouTube Music'],
+                    datasets: [{
+                        label: 'Streams Needed for $100',
+                        data: [7813, 12500, 25000, 30303, 50000],
+                        backgroundColor: '#E59500',
+                        borderColor: '#B87700',
+                        borderWidth: 1
+                    }]
+                }
+            };
+
+            function createMarketShareChart() {
+                if(marketShareChart) marketShareChart.destroy();
+                marketShareChart = new Chart(marketShareChartCtx, {
+                    type: 'doughnut',
+                    data: marketData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createArtistPayoutChart(metric = 'perStream') {
+                if(artistPayoutChart) artistPayoutChart.destroy();
+                artistPayoutChart = new Chart(artistPayoutChartCtx, {
+                    type: 'bar',
+                    data: payoutData[metric],
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (metric === 'perStream') {
+                                            return '$' + value.toFixed(4);
+                                        }
+                                        return new Intl.NumberFormat().format(value);
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.x !== null) {
+                                            if(metric === 'perStream') {
+                                                label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4 }).format(context.parsed.x);
+                                            } else {
+                                                label += new Intl.NumberFormat('en-US').format(context.parsed.x);
+                                            }
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createMarketShareChart();
+            createArtistPayoutChart();
+
+            const payoutToggleButton = document.getElementById('payout-toggle-btn');
+            let currentPayoutMetric = 'perStream';
+            payoutToggleButton.addEventListener('click', () => {
+                if (currentPayoutMetric === 'perStream') {
+                    currentPayoutMetric = 'per100';
+                    payoutToggleButton.textContent = "Switch to 'Payout per Stream'";
+                } else {
+                    currentPayoutMetric = 'perStream';
+                    payoutToggleButton.textContent = "Switch to 'Streams for $100'";
+                }
+                createArtistPayoutChart(currentPayoutMetric);
+            });
+
+            const solutionButtons = document.querySelectorAll('.solution-btn');
+            const modal = document.getElementById('solution-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            solutionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modalTitle.textContent = button.dataset.title;
+                    modalContent.innerHTML = button.dataset.content;
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            });
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+        });
+    </script>
+</body>
+</html>
